@@ -52,9 +52,16 @@ router.put("/edit-article/:id", async (req, res, next) => {
 });
 
 //DELETE
-router.delete("/edit-article/:id", (req, res, next) => {
+router.delete("/edit-article/:id", async (req, res, next) => {
   try {
-  } catch (error) {}
+    const { id } = req.params;
+    await Article.findByIdAndRemove(id);
+    res.status(200).json({
+      message: `The article with the id ${id} was deleted successfully`,
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;
