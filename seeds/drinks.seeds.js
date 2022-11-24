@@ -1,3 +1,8 @@
+const mongoose = require("mongoose");
+const Cocktail = require("../models/Cocktail.model");
+const MONGO_URI =
+  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/backend";
+
 const drinks = [
   {
     idDrink: "17222",
@@ -9715,3 +9720,75 @@ const drinks = [
     strMeasure4: null,
   },
 ];
+
+drinks.forEach((drink) => {
+  drink.strIngredient = [];
+  drink.strMeasure = [];
+
+  drink.strIngredient1 === null
+    ? delete drink.strIngredient1
+    : drink.strIngredient.push(drink.strIngredient1);
+  drink.strIngredient2 === null
+    ? delete drink.strIngredient2
+    : drink.strIngredient.push(drink.strIngredient2);
+  drink.strIngredient3 === null
+    ? delete drink.strIngredient3
+    : drink.strIngredient.push(drink.strIngredient3);
+  drink.strIngredient4 === null
+    ? delete drink.strIngredient4
+    : drink.strIngredient.push(drink.strIngredient4);
+  drink.strIngredient5 === null
+    ? delete drink.strIngredient5
+    : drink.strIngredient.push(drink.strIngredient5);
+  drink.strIngredient6 === null
+    ? delete drink.strIngredient6
+    : drink.strIngredient.push(drink.strIngredient6);
+  drink.strIngredient7 === null
+    ? delete drink.strIngredient7
+    : drink.strIngredient.push(drink.strIngredient7);
+  drink.strIngredient8 === null
+    ? delete drink.strIngredient8
+    : drink.strIngredient.push(drink.strIngredient8);
+
+  drink.strMeasure1 === null
+    ? delete drink.strMeasure1
+    : drink.strMeasure.push(drink.strMeasure1);
+  drink.strMeasure2 === null
+    ? delete drink.strMeasure2
+    : drink.strMeasure.push(drink.strMeasure2);
+  drink.strMeasure3 === null
+    ? delete drink.strMeasure3
+    : drink.strMeasure.push(drink.strMeasure3);
+  drink.strMeasure4 === null
+    ? delete drink.strMeasure4
+    : drink.strMeasure.push(drink.strMeasure4);
+
+  delete drink.strIngredient1;
+  delete drink.strIngredient2;
+  delete drink.strIngredient3;
+  delete drink.strIngredient4;
+  delete drink.strIngredient5;
+  delete drink.strIngredient6;
+  delete drink.strIngredient7;
+  delete drink.strIngredient8;
+  delete drink.strMeasure1;
+  delete drink.strMeasure2;
+  delete drink.strMeasure3;
+  delete drink.strMeasure4;
+});
+
+//console.log(drinks);
+console.log(drinks.length);
+
+async function seedDatabase() {
+  try {
+    await mongoose.connect(MONGO_URI);
+    const cocktails = await Cocktail.insertMany(drinks);
+    console.log(cocktails);
+    await mongoose.disconnect();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//seedDatabase();
