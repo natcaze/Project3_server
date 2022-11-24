@@ -30,9 +30,25 @@ router.post("/create-article", async (req, res, next) => {
 });
 
 //PUT route
-router.put("/edit-article/:id", (req, res, next) => {
+router.put("/edit-article/:id", async (req, res, next) => {
   try {
-  } catch (error) {}
+    const { id } = req.params;
+    const { title, description, recipe, img } = req.body;
+    const updatedArticle = await Article.findByIdAndUpdate(
+      id,
+      {
+        title,
+        description,
+        recipe,
+        img,
+      },
+      { new: true }
+    );
+
+    res.status(200).json(updatedArticle);
+  } catch (error) {
+    next(error);
+  }
 });
 
 //DELETE
