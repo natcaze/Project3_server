@@ -2,7 +2,14 @@ const router = require("express").Router();
 const Article = require("../models/Article.model");
 
 //GET route
-router.get("/all-articles", (req, res, next) => {});
+router.get("/all-articles", async (req, res, next) => {
+  try {
+    const allArticles = await Article.find();
+    res.status(200).json(allArticles);
+  } catch (error) {
+    next(error);
+  }
+});
 
 //POST route
 router.post("/create-article", async (req, res, next) => {
@@ -17,7 +24,7 @@ router.post("/create-article", async (req, res, next) => {
 
     res.status(201).json(newArticle);
   } catch (error) {
-    console.log("test", error);
+    console.log(error);
     next(error);
   }
 });
