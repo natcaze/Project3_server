@@ -27,7 +27,7 @@ app.use("/user", userRoutes);
 const apiRoutes = require("./routes/api.routes");
 app.use("/user", apiRoutes);
 
-const articlesRoutes = require("./routes/article.routes");
+const articlesRoutes = require("./routes/articles.routes");
 app.use("/article", articlesRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes

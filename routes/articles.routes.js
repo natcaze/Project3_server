@@ -1,22 +1,35 @@
 const router = require("express").Router();
+const Article = require("../models/Article.model");
 
 //GET route
-router.get("/article", (req, res, next) => {});
+router.get("/all-articles", (req, res, next) => {});
 
 //POST route
-router.post("/article/create-article", (req, res, next) => {
+router.post("/create-article", async (req, res, next) => {
   try {
-  } catch (error) {}
+    const { title, description, recipe, img } = req.body;
+    const newArticle = await Article.create({
+      title,
+      description,
+      recipe,
+      img,
+    });
+
+    res.status(201).json(newArticle);
+  } catch (error) {
+    console.log("test", error);
+    next(error);
+  }
 });
 
 //PUT route
-router.put("/article/edit-article/:id", (req, res, next) => {
+router.put("/edit-article/:id", (req, res, next) => {
   try {
   } catch (error) {}
 });
 
 //DELETE
-router.delete("/article/edit-article/:id", (req, res, next) => {
+router.delete("/edit-article/:id", (req, res, next) => {
   try {
   } catch (error) {}
 });

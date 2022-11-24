@@ -1,7 +1,9 @@
 const router = require("express").Router();
 
 //GET route
-router.get("/user/:id", (req, res, next) => {});
+router.get("/user/:id", (req, res, next) => { 
+    
+});
 
 //PUT route
 router.put("/user/edit-profile/:id", (req, res, next) => {
