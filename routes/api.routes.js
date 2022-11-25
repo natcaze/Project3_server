@@ -4,11 +4,24 @@ const Cocktail = require("../models/Cocktail.model");
 //GET routes
 router.get("/generated-cocktail", async (req, res, next) => {
   try {
-    const { ingredient1, ingredient2 } = req.query;
+    const { ingredients } = req.query;
 
-    const generatedCocktail = await Cocktail.findOne({
-      strIngredient: { $all: [ingredient1, ingredient2] },
-    });
+let generatedCocktail
+
+    if (typeof ingredients === "object"){
+
+       generatedCocktail = await Cocktail.findOne({
+        strIngredient: { $all: [...ingredients] },
+      });
+    }else {
+       generatedCocktail = await Cocktail.findOne({
+        strIngredient: { $in: ingredients },
+      });
+
+    }
+
+
+
     res.status(200).json(generatedCocktail);
   } catch (error) {
     next(error);
