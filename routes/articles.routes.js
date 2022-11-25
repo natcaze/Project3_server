@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Article = require("../models/Article.model");
+const {isAuthenticated} = require("../middleware/jwt.middleware")
 
 //GET route
 router.get("/all-articles", async (req, res, next) => {
@@ -12,7 +13,7 @@ router.get("/all-articles", async (req, res, next) => {
 });
 
 //POST route
-router.post("/create-article", async (req, res, next) => {
+router.post("/create-article",isAuthenticated, async (req, res, next) => {
   try {
     const { title, description, recipe, img } = req.body;
     const newArticle = await Article.create({
@@ -30,7 +31,7 @@ router.post("/create-article", async (req, res, next) => {
 });
 
 //PUT route
-router.put("/edit-article/:id", async (req, res, next) => {
+router.put("/edit-article/:id",isAuthenticated, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { title, description, recipe, img } = req.body;
@@ -52,7 +53,7 @@ router.put("/edit-article/:id", async (req, res, next) => {
 });
 
 //DELETE
-router.delete("/edit-article/:id", async (req, res, next) => {
+router.delete("/edit-article/:id",isAuthenticated, async (req, res, next) => {
   try {
     const { id } = req.params;
     await Article.findByIdAndRemove(id);

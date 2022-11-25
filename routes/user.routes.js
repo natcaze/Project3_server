@@ -6,7 +6,7 @@ const {isAuthenticated} = require("../middleware/jwt.middleware")
 
 /* ________________________USER PROFILE_______________________________________ */
 //GET route
-router.get("/profile/:id", async (req, res, next) => { 
+router.get("/profile/:id",isAuthenticated, async (req, res, next) => { 
     try {
       const {id} = req.params
       const getUser = await User.findById(id)
@@ -18,7 +18,7 @@ router.get("/profile/:id", async (req, res, next) => {
 });
 
 //PUT route
-router.put("/edit-profile/:id", async (req, res, next) => {
+router.put("/edit-profile/:id",isAuthenticated, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name, password } = req.body;
@@ -54,7 +54,7 @@ router.get("/create-favorite/:cocktailId",isAuthenticated, async (req, res, next
 });
 
 //GET route
-router.get("/favorites/:userId", async (req, res, next) => {
+router.get("/favorites/:userId",isAuthenticated, async (req, res, next) => {
 try {
   const {userId} = req.params
   const userFavorites = await User.findById(userId).populate("favoriteCocktails")
