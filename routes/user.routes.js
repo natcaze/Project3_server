@@ -118,10 +118,10 @@ router.post("/create-cocktail",isAuthenticated, async (req, res, next) => {
 
 //PUT route
 router.put("/edit-cocktail/:cocktailId",isAuthenticated, async (req, res, next) => {
-  try{
-  const userId = req.payload._id
-  const { cocktailId } = req.params;
-    const { strDrink,
+  try {
+    const { cocktailId } = req.params;
+    const { 
+      strDrink,
       strCategory,
       strAlcoholic,
       strGlass,
@@ -129,20 +129,20 @@ router.put("/edit-cocktail/:cocktailId",isAuthenticated, async (req, res, next) 
       strDrinkThumb,
       strIngredient,
       strMeasure } = req.body;
+
     const updatedCocktail = await Cocktail.findByIdAndUpdate(
       cocktailId,
       {
         strDrink,
-      strCategory,
-      strAlcoholic,
-      strGlass,
-      strInstructions,
-      strDrinkThumb,
-      strIngredient,
-      strMeasure
+        strCategory,
+        strAlcoholic,
+        strGlass,
+        strInstructions,
+        strDrinkThumb,
+        strIngredient,
+        strMeasure,
       },
-      { new: true },
-      {userId}
+      { new: true }
     );
 
     res.status(200).json(updatedCocktail);
@@ -152,14 +152,10 @@ router.put("/edit-cocktail/:cocktailId",isAuthenticated, async (req, res, next) 
 });
 
 //DELETE route
-router.delete("/delete-cocktail/:cocktailId",isAuthenticated, async (req, res, next) => {
+router.delete("/edit-cocktail/:cocktailId",isAuthenticated, async (req, res, next) => {
   try {
-    const {cocktailId} = req.params
-    const userId = req.payload._id
-
-    await User.findByIdAndRemove(cocktailId, {userId})
-
-
+    const { cocktailId } = req.params;
+    await Article.findByIdAndRemove(cocktailId);
     res.status(200).json({
       message: `The cocktail with the id ${cocktailId} was deleted successfully`,
     });
