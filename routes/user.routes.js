@@ -155,7 +155,7 @@ router.put("/edit-cocktail/:cocktailId",isAuthenticated, async (req, res, next) 
 router.delete("/edit-cocktail/:cocktailId",isAuthenticated, async (req, res, next) => {
   try {
     const { cocktailId } = req.params;
-    await Article.findByIdAndRemove(cocktailId);
+    await Cocktail.findByIdAndRemove(cocktailId);
     res.status(200).json({
       message: `The cocktail with the id ${cocktailId} was deleted successfully`,
     });
@@ -165,16 +165,13 @@ router.delete("/edit-cocktail/:cocktailId",isAuthenticated, async (req, res, nex
 });
 
 //GET route
-router.get("/created-cocktails/:userId", async (req, res, next) => {
- try{
-
-  const {userId} = req.params
-  const getListCocktails = await Cocktail.findById(userId)
-  
-  res.status(200).json(getListCocktails)
+router.get("/created-cocktails",isAuthenticated, async (req, res, next) => {
+  try {
+    const allCreatedCocktails = await User.find();
+    res.status(200).json(allCreatedCocktails);
   } catch (error) {
-  next(error)
-}
+    next(error);
+  }
 });
 
 
