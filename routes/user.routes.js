@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/User.model");
+const Cocktail = require("../models/Cocktail.model")
+const {isAuthenticated} = require("../middleware/jwt.middleware")
 
 
 //GET route
@@ -34,21 +36,44 @@ router.put("/edit-profile/:id", async (req, res, next) => {
   }
 });
 
+//POST route
+router.get("/create-favorite/:cocktailId",isAuthenticated, async (req, res, next) => {
+  try {
+    const {cocktailId} = req.params
+    const userId = req.payload._id
+    const createdFavorite = await User.findByIdAndUpdate(userId, {$push: {favoriteCocktails: cocktailId}})
+
+
+    res.status(200).json(createdFavorite)
+  } catch (error) {
+    next(error)
+  }
+});
 
 //GET route
-router.get("/favorites/:id", (req, res, next) => {});
+router.get("/favorites/:userId", async (req, res, next) => {
+try {
+  const {userId} = req.params
+  const userFavorites = await User.findById(userId).populate("favoriteCocktails")
 
-//POST route
-router.post("/create-favorite/:id", (req, res, next) => {
-  try {
-  } catch (error) {}
+  res.status(200).json(userFavorites)
+} catch (error) {
+  next(error)
+}
 });
 
 //DELETE
-router.delete("/edit-favorites/:id", (req, res, next) => {
+/* router.delete("/edit-favorites/:cocktailId",isAuthenticated, async (req, res, next) => {
   try {
-  } catch (error) {}
-});
+    const cocktailId = req.payload._id
+    await User.findByIdAndRemove(cocktailId);
+    res.status(200).json({
+      message: `The article with the id ${id} was deleted successfully`,
+    });
+  } catch (error) {
+    next(error);
+  }
+}); */
 
 //GET route
 router.get("/created-articles/:id", (req, res, next) => {});

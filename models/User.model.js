@@ -7,8 +7,8 @@ const userSchema = new Schema(
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   userProfile: { type: Schema.Types.ObjectId, ref:'User' },
-  createdCocktails: [ { type: Schema.Types.ObjectId, ref:'CreatedCocktails' } ],
-  favoriteCocktails: [ { type: Schema.Types.ObjectId, ref:'FavoriteCocktails' } ],
+/*   createdCocktails: [ { type: Schema.Types.ObjectId, ref:'CreatedCocktails' } ], */
+  favoriteCocktails: [ { type: Schema.Types.ObjectId, ref:'Cocktail' } ],
   img:{ type: String,
     type: Schema.Types.ObjectId, ref:'FavoriteCocktails' } ,
 },
