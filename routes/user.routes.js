@@ -63,17 +63,21 @@ try {
 });
 
 //DELETE
-/* router.delete("/edit-favorites/:cocktailId",isAuthenticated, async (req, res, next) => {
+ router.delete("/edit-favorites/:cocktailId",isAuthenticated, async (req, res, next) => {
   try {
-    const cocktailId = req.payload._id
-    await User.findByIdAndRemove(cocktailId);
+    const {cocktailId} = req.params
+    const userId = req.payload._id
+
+    await User.findByIdAndRemove(cocktailId, {userId})
+
+
     res.status(200).json({
-      message: `The article with the id ${id} was deleted successfully`,
+      message: `The cocktail with the id ${cocktailId} was deleted successfully`,
     });
   } catch (error) {
     next(error);
   }
-}); */
+}); 
 
 //GET route
 router.get("/created-articles/:id", (req, res, next) => {});
