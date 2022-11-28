@@ -165,7 +165,7 @@ router.delete("/edit-cocktail/:cocktailId",isAuthenticated, async (req, res, nex
 });
 
 //GET route
-router.get("/created-cocktails",isAuthenticated, async (req, res, next) => {
+router.get("/creations",isAuthenticated, async (req, res, next) => {
   try {
     const allCreatedCocktails = await User.find();
     res.status(200).json(allCreatedCocktails);
