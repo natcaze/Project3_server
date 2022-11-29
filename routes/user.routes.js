@@ -187,13 +187,12 @@ router.delete(
 
 
 //GET route
-router.get("/creations", isAuthenticated, async (req, res, next) => {
+router.get("/creations/:cocktailId", isAuthenticated, async (req, res, next) => {
   try {
-    const allCreatedCocktails = await Cocktail.find();
+    const allCreatedCocktails = await User.find();
     res.status(200).json(allCreatedCocktails);
   } catch (error) {
     next(error);
   }
 });
-
 module.exports = router;
