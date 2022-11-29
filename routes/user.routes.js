@@ -183,6 +183,8 @@ router.delete(
   }
 );
 
+/* ________________________USER CREATIONS - COCKTAILS + ARTICLES_______________________________________ */
+
 //GET route
 router.get("/creations/:userId", isAuthenticated, async (req, res, next) => {
   try {

@@ -5,7 +5,11 @@ const articleSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String },
   recipe: { type: String, required: true },
-  img: { type: String },
+  img: {
+    type: String,
+    default:
+      "https://i.pinimg.com/564x/70/d3/04/70d30462c7a20ea294e8b216095a76e6.jpg",
+  },
 });
 
 const Article = model("Article", articleSchema);
