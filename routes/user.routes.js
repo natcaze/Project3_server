@@ -186,13 +186,14 @@ router.delete(
 );
 
 //GET route
-router.get("/creations", isAuthenticated, async (req, res, next) => {
+router.get("/creations/:cocktailId", isAuthenticated, async (req, res, next) => {
   try {
-    const allCreatedCocktails = await User.find();
-    res.status(200).json(allCreatedCocktails);
+    const { cocktailId } = req.params;
+
+    const createdCocktail = await Cocktail.findById(cocktailId);
+    res.status(200).json(createdCocktail);
   } catch (error) {
     next(error);
   }
 });
-
 module.exports = router;
