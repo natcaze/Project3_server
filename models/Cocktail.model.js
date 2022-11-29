@@ -7,7 +7,11 @@ const cocktailSchema = new Schema({
   strAlcoholic: { type: String },
   strGlass: { type: String },
   strInstructions: { type: String },
-  strDrinkThumb: { type: String },
+  strDrinkThumb: { 
+    type: String,
+    default: 'https://static.specsonline.com/wp-content/themes/Specs%20Theme/images/default_bar-mixers.png'
+  
+  },
   strIngredient: [{ type: String }],
   strMeasure: [{ type: String }],
 });

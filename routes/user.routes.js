@@ -98,26 +98,36 @@ router.post("/create-cocktail", isAuthenticated, async (req, res, next) => {
     const userId = req.payload._id;
 
     const {
-      strDrink,
-      strCategory,
-      strAlcoholic,
-      strGlass,
-      strInstructions,
-      strDrinkThumb,
-      strIngredient,
-      strMeasure,
+      cocktailName,
+      description,
+      ingredients,
+      image,
     } = req.body;
 
-    const newCocktail = await Cocktail.create({
-      strDrink,
-      strCategory,
-      strAlcoholic,
-      strGlass,
-      strInstructions,
-      strDrinkThumb,
-      strIngredient,
-      strMeasure,
-    });
+    let newCocktail;
+
+if (image){
+   newCocktail = await Cocktail.create({
+    strDrink: cocktailName,
+    strCategory: '',
+    strAlcoholic: '',
+    strGlass: '',
+    strInstructions: description,
+    strDrinkThumb: image,
+    strIngredient: ingredients,
+    strMeasure: '',
+  });
+}else{
+   newCocktail = await Cocktail.create({
+    strDrink: cocktailName,
+    strCategory: '',
+    strAlcoholic: '',
+    strGlass: '',
+    strInstructions: description,
+    strIngredient: ingredients,
+    strMeasure: '',
+  });
+}
 
     await User.findByIdAndUpdate(userId, {
       $push: { createdCocktails: newCocktail._id },
@@ -137,27 +147,24 @@ router.put(
     try {
       const { cocktailId } = req.params;
       const {
-        strDrink,
-        strCategory,
-        strAlcoholic,
-        strGlass,
-        strInstructions,
-        strDrinkThumb,
-        strIngredient,
-        strMeasure,
+        cocktailName,
+        description,
+        ingredients,
+        image,
+
       } = req.body;
 
       const updatedCocktail = await Cocktail.findByIdAndUpdate(
         cocktailId,
         {
-          strDrink,
-          strCategory,
-          strAlcoholic,
-          strGlass,
-          strInstructions,
-          strDrinkThumb,
-          strIngredient,
-          strMeasure,
+          strDrink: cocktailName,
+          strCategory: '',
+          strAlcoholic: '',
+          strGlass: '',
+          strInstructions: description,
+          strDrinkThumb: image,
+          strIngredient: ingredients,
+          strMeasure: '',
         },
         { new: true }
       );
@@ -191,10 +198,27 @@ router.delete(
 router.get("/creations/:userId", isAuthenticated, async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const createdCocktail = await User.find(userId).populate("createdCocktails");
+    const createdCocktail = await User.findById(userId).populate("createdCocktails");
     res.status(200).json(createdCocktail);
   } catch (error) {
     next(error);
   }
 });
+
+
+router.get("/one-cocktail/:cocktailId", isAuthenticated, async (req, res, next) => {
+  try {
+    const { cocktailId } = req.params;
+
+    const foundCocktail = await Cocktail.findById(cocktailId)
+
+    res.status(200).json(foundCocktail);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
+
 module.exports = router;
