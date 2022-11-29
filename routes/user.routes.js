@@ -191,6 +191,7 @@ router.get("/creations/:cocktailId", isAuthenticated, async (req, res, next) => 
     const { cocktailId } = req.params;
 
     const createdCocktail = await Cocktail.findById(cocktailId);
+    /* teste */
     res.status(200).json(createdCocktail);
   } catch (error) {
     next(error);
