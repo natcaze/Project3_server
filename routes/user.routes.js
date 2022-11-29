@@ -185,10 +185,11 @@ router.delete(
   }
 );
 
+
 //GET route
 router.get("/creations", isAuthenticated, async (req, res, next) => {
   try {
-    const allCreatedCocktails = await User.find();
+    const allCreatedCocktails = await Cocktail.find();
     res.status(200).json(allCreatedCocktails);
   } catch (error) {
     next(error);
