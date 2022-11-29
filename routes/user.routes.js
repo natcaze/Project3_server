@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/User.model");
 const Cocktail = require("../models/Cocktail.model");
+const Article = require("../models/Article.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 /* ________________________USER PROFILE_______________________________________ */
@@ -97,37 +98,32 @@ router.post("/create-cocktail", isAuthenticated, async (req, res, next) => {
   try {
     const userId = req.payload._id;
 
-    const {
-      cocktailName,
-      description,
-      ingredients,
-      image,
-    } = req.body;
+    const { cocktailName, description, ingredients, image } = req.body;
 
     let newCocktail;
 
-if (image){
-   newCocktail = await Cocktail.create({
-    strDrink: cocktailName,
-    strCategory: '',
-    strAlcoholic: '',
-    strGlass: '',
-    strInstructions: description,
-    strDrinkThumb: image,
-    strIngredient: ingredients,
-    strMeasure: '',
-  });
-}else{
-   newCocktail = await Cocktail.create({
-    strDrink: cocktailName,
-    strCategory: '',
-    strAlcoholic: '',
-    strGlass: '',
-    strInstructions: description,
-    strIngredient: ingredients,
-    strMeasure: '',
-  });
-}
+    if (image) {
+      newCocktail = await Cocktail.create({
+        strDrink: cocktailName,
+        strCategory: "",
+        strAlcoholic: "",
+        strGlass: "",
+        strInstructions: description,
+        strDrinkThumb: image,
+        strIngredient: ingredients,
+        strMeasure: "",
+      });
+    } else {
+      newCocktail = await Cocktail.create({
+        strDrink: cocktailName,
+        strCategory: "",
+        strAlcoholic: "",
+        strGlass: "",
+        strInstructions: description,
+        strIngredient: ingredients,
+        strMeasure: "",
+      });
+    }
 
     await User.findByIdAndUpdate(userId, {
       $push: { createdCocktails: newCocktail._id },
@@ -146,25 +142,19 @@ router.put(
   async (req, res, next) => {
     try {
       const { cocktailId } = req.params;
-      const {
-        cocktailName,
-        description,
-        ingredients,
-        image,
-
-      } = req.body;
+      const { cocktailName, description, ingredients, image } = req.body;
 
       const updatedCocktail = await Cocktail.findByIdAndUpdate(
         cocktailId,
         {
           strDrink: cocktailName,
-          strCategory: '',
-          strAlcoholic: '',
-          strGlass: '',
+          strCategory: "",
+          strAlcoholic: "",
+          strGlass: "",
           strInstructions: description,
           strDrinkThumb: image,
           strIngredient: ingredients,
-          strMeasure: '',
+          strMeasure: "",
         },
         { new: true }
       );
@@ -193,32 +183,49 @@ router.delete(
   }
 );
 
-
 //GET route
 router.get("/creations/:userId", isAuthenticated, async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const createdCocktail = await User.findById(userId).populate("createdCocktails");
+    const createdCocktail = await User.findById(userId).populate(
+      "createdCocktails"
+    );
     res.status(200).json(createdCocktail);
   } catch (error) {
     next(error);
   }
 });
 
+router.get(
+  "/one-cocktail/:cocktailId",
+  isAuthenticated,
+  async (req, res, next) => {
+    try {
+      const { cocktailId } = req.params;
 
-router.get("/one-cocktail/:cocktailId", isAuthenticated, async (req, res, next) => {
-  try {
-    const { cocktailId } = req.params;
+      const foundCocktail = await Cocktail.findById(cocktailId);
 
-    const foundCocktail = await Cocktail.findById(cocktailId)
-
-    res.status(200).json(foundCocktail);
-  } catch (error) {
-    next(error);
+      res.status(200).json(foundCocktail);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
+router.get(
+  "/one-article/:articleId",
+  isAuthenticated,
+  async (req, res, next) => {
+    try {
+      const { articleId } = req.params;
 
+      const foundArticle = await Article.findById(articleId);
 
+      res.status(200).json(foundArticle);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 module.exports = router;
