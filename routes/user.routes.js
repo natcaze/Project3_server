@@ -39,7 +39,7 @@ router.put("/edit-profile/:id", isAuthenticated, async (req, res, next) => {
 
 /* ________________________USER FAVORITES_______________________________________ */
 //POST route
-router.get(
+router.put(
   "/create-favorite/:cocktailId",
   isAuthenticated,
   async (req, res, next) => {
@@ -57,34 +57,19 @@ router.get(
   }
 );
 
-//GET route
-router.get("/favorites/:userId", isAuthenticated, async (req, res, next) => {
-  try {
-    const { userId } = req.params;
-    const userFavorites = await User.findById(userId).populate(
-      "favoriteCocktails"
-    );
-
-    res.status(200).json(userFavorites);
-  } catch (error) {
-    next(error);
-  }
-});
-
 //DELETE
-router.delete(
+router.put(
   "/edit-favorites/:cocktailId",
   isAuthenticated,
   async (req, res, next) => {
     try {
       const { cocktailId } = req.params;
       const userId = req.payload._id;
-
-      await User.findByIdAndRemove(cocktailId, { userId });
-
-      res.status(200).json({
-        message: `The cocktail with the id ${cocktailId} was deleted successfully`,
+      const createdFavorite = await User.findByIdAndUpdate(userId, {
+        $pull: { favoriteCocktails: cocktailId },
       });
+
+      res.status(200).json(createdFavorite);
     } catch (error) {
       next(error);
     }
@@ -190,7 +175,9 @@ router.get("/creations/:userId", isAuthenticated, async (req, res, next) => {
     const { userId } = req.params;
     const createdCocktail = await User.findById(userId)
       .populate("createdCocktails")
-      .populate("createdArticles");
+      .populate("createdArticles")
+      .populate("favoriteCocktails");
+
     res.status(200).json(createdCocktail);
   } catch (error) {
     next(error);
