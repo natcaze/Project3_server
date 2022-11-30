@@ -18,12 +18,23 @@ router.post("/create-article", isAuthenticated, async (req, res, next) => {
   try {
     const { title, description, recipe, img } = req.body;
     const userId = req.payload._id;
-    const newArticle = await Article.create({
-      title,
-      description,
-      recipe,
-      img,
-    });
+
+    let newArticle;
+
+    if (img) {
+      newArticle = await Article.create({
+        title,
+        description,
+        recipe,
+        img,
+      });
+    } else {
+      newArticle = await Article.create({
+        title,
+        description,
+        recipe,
+      });
+    }
 
     await User.findByIdAndUpdate(userId, {
       $push: {

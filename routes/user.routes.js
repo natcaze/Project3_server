@@ -21,13 +21,12 @@ router.get("/profile/:id", isAuthenticated, async (req, res, next) => {
 router.put("/edit-profile/:id", isAuthenticated, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name, email, password } = req.body;
+    const { name, email } = req.body;
     const updatedProfile = await User.findByIdAndUpdate(
       id,
       {
         name,
         email,
-        password,
       },
       { new: true }
     );
@@ -189,9 +188,9 @@ router.delete(
 router.get("/creations/:userId", isAuthenticated, async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const createdCocktail = await User.findById(userId).populate(
-      "createdCocktails"
-    );
+    const createdCocktail = await User.findById(userId)
+      .populate("createdCocktails")
+      .populate("createdArticles");
     res.status(200).json(createdCocktail);
   } catch (error) {
     next(error);
