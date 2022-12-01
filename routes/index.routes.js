@@ -6,6 +6,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.get("/contact-us", (req, res, next) => {
+  /* a */
   res.json("All good in here");
 })
 
